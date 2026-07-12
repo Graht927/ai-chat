@@ -23,10 +23,12 @@ public class GlobalExceptionHandler{
     }
     @ExceptionHandler
     public AIChatResult<String> handle(HandlerMethodValidationException e){
+        e.printStackTrace();
         return AIChatResult.fail(e.getMessage());
     }
     @ExceptionHandler
     public AIChatResult<String> handle(MethodArgumentNotValidException e){
+        e.printStackTrace();
         return AIChatResult.fail(e.getMessage());
     }
 }
