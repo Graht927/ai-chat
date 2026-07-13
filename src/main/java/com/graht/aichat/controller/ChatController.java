@@ -1,22 +1,29 @@
 package com.graht.aichat.controller;
 
+import com.graht.aichat.ai.domain.AIResponse;
 import com.graht.aichat.common.AIChatResult;
 import com.graht.aichat.dto.ChatRequest;
+import com.graht.aichat.service.ChatService;
+import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author GRAHT
  */
-@RestController("/v1/chat")
+@RestController
+@RequestMapping("/v1/chat")
 public class ChatController {
+    private static final Logger log = LoggerFactory.getLogger(ChatController.class);
+    @Resource
+    private ChatService chatService;
 
-    @GetMapping("/")
-    public AIChatResult<String> chat(@Valid @RequestParam ChatRequest  request){
-
-        return AIChatResult.ok("hello world");
+    @PostMapping
+    public AIChatResult<AIResponse> chat(@Valid @RequestBody ChatRequest  request){
+        log.info("Received chat request: {}", request);
+        return AIChatResult.ok(chatService.chat(request));
     }
 }

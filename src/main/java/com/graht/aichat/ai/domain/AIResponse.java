@@ -1,5 +1,6 @@
 package com.graht.aichat.ai.domain;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -7,10 +8,11 @@ import lombok.Data;
  */
 
 @Data
+@Builder
 public class AIResponse {
     private String answer;
-    private String modelName;
-    private String modelType;
+    private String provider;
+    private String model;
     private String modelVersion;
     private TokenUsage tokenUsage;
     private String requestId;

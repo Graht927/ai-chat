@@ -5,7 +5,9 @@ import com.graht.aichat.common.ResultCode;
 import com.graht.aichat.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -23,10 +25,15 @@ public class AIClientRegistry implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(Object client, String beanName) {
         if (client instanceof AIClient) {
-            if (clients.containsKey(((AIClient) client).getModelType())) {
+            AIClient aiClient = clients.putIfAbsent(((AIClient) client).getModelType(), (AIClient) client);
+            if (aiClient != null) {
                 throw new IllegalArgumentException("Duplicate AIClient bean for model type: " + ((AIClient) client).getModelType());
-            }else clients.put(((AIClient) client).getModelType(), (AIClient) client);
-            log.info("Registered AIClient: " + beanName);
+            }
+            log.info(
+                    "Registered AIClient [{}] for {}",
+                    beanName,
+                    ((AIClient) client).getModelType()
+            );
         }
         return client;
     }
@@ -36,6 +43,7 @@ public class AIClientRegistry implements BeanPostProcessor {
         if (aiClient == null){
             throw new BusinessException(ResultCode.AI_CLIENT_NOT_FOUND, "AI Client not found: " + modelType);
         }
+
         return aiClient;
     }
 }
