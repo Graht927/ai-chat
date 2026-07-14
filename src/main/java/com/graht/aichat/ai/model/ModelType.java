@@ -12,7 +12,7 @@ public enum ModelType {
 
     QWEN("qwen","1"),
     OPENAI("openai","1"),
-    DEEPSEEK("deepseek","1"),;
+    DEEPSEEK("deepseek","deepseek-chat"),;
     private final String modelName;
     private final String modelVersion;
     ModelType(String modelName, String modelVersion){

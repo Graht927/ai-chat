@@ -12,7 +12,9 @@ public enum ResultCode {
     BUSINESS_ERROR(50001,"business error"),
     INVALID_PARAMETER(600,"invalid parameter"),
     PARAM_VALIDATION_FAILED(601,"param validation failed"),
-    AI_CLIENT_NOT_FOUND(50002,"AI Client not found" );
+    AI_CLIENT_NOT_FOUND(50002,"AI Client not found" ),
+    AI_TIMEOUT(50003,"AI service is  temporarily unavailable,Please try again later"),
+    AI_ERROR(50004,"AI service error");
     private final int code;
     private final String message;
     ResultCode(int code, String message){

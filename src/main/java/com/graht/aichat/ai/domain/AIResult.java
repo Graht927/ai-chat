@@ -6,14 +6,11 @@ import lombok.Data;
 /**
  * @author GRAHT
  */
-
 @Data
 @Builder
-public class AIResponse {
+public class AIResult {
     private String answer;
-    private String provider;
-    private String model;
-    private String modelVersion;
-    private String status;
+    private String requestId;
+    private TokenUsage tokenUsage;
 
 }

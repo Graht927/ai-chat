@@ -1,7 +1,5 @@
 package com.graht.aichat.common;
 
-import java.util.UUID;
-
 /**
  * @author GRAHT
  */

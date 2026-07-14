@@ -2,6 +2,8 @@ package com.graht.aichat.controller;
 
 import com.graht.aichat.ai.domain.AIResponse;
 import com.graht.aichat.common.AIChatResult;
+import com.graht.aichat.common.RequestAttributes;
+import com.graht.aichat.common.RequestContext;
 import com.graht.aichat.dto.ChatRequest;
 import com.graht.aichat.service.ChatService;
 import jakarta.annotation.Resource;
@@ -23,7 +25,7 @@ public class ChatController {
 
     @PostMapping
     public AIChatResult<AIResponse> chat(@Valid @RequestBody ChatRequest  request){
-        log.info("Received chat request: {}", request);
+        log.info(RequestContext.getRequestId() + "Received chat request: {}", request);
         return AIChatResult.ok(chatService.chat(request));
     }
 }

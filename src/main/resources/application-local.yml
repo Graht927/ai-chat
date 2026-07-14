@@ -1,16 +1,13 @@
 spring:
   application:
     name: ai-chat
-  profiles:
-    active: local
 server:
   port: 8080
-
 ai:
   credentials:
     models:
       deepseek:
-        api-key: sk-test
+        api-key: sk-dfd1b213dafa47958e4476501e1cc11b
         base-url: https://api.deepseek.com/chat/completions
       openai:
         api-key: sk-test

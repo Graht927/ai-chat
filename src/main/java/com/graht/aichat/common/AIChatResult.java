@@ -29,6 +29,9 @@ public final class AIChatResult<T> {
     public static <T> AIChatResult<T> fail(T data){
         return new AIChatResult<> (ResultCode.SYSTEM_ERROR.getCode(), ResultCode.SYSTEM_ERROR.getMessage(), data);
     }
+    public static <T> AIChatResult<T> fail(AIErrorCode errorCode){
+        return new AIChatResult<>(errorCode.getCode(), errorCode.getMessage(), null);
+    }
     public static Boolean isOk(AIChatResult<?> result){
         return result.code == ResultCode.SUCCESS.getCode();
     }

@@ -1,6 +1,7 @@
 package com.graht.aichat.ai.client;
 
 import com.graht.aichat.ai.domain.AIResponse;
+import com.graht.aichat.ai.domain.AIResult;
 import com.graht.aichat.ai.dto.AIRequest;
 import com.graht.aichat.ai.model.ModelType;
 
@@ -10,6 +11,6 @@ import com.graht.aichat.ai.model.ModelType;
  */
 
 public interface AIClient {
-    AIResponse chat(AIRequest request);
+    AIResult chat(AIRequest request);
     ModelType getModelType();
 }

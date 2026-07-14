@@ -1,13 +1,15 @@
 package com.graht.aichat.ai.domain;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
  * @author GRAHT
  */
 @Data
+@Builder
 public class TokenUsage {
-    private Long promptTokens;
-    private Long completionTokens;
-    private Long totalTokens;
+    private Integer promptTokens;
+    private Integer completionTokens;
+    private Integer totalTokens;
 }

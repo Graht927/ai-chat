@@ -1,6 +1,7 @@
 package com.graht.aichat.ai.client;
 
 import com.graht.aichat.ai.domain.AIResponse;
+import com.graht.aichat.ai.domain.AIResult;
 import com.graht.aichat.ai.dto.AIRequest;
 import com.graht.aichat.ai.model.ModelType;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class OpenClient implements AIClient{
     @Override
-    public AIResponse chat(AIRequest request) {
+    public AIResult chat(AIRequest request) {
         return null;
     }
 

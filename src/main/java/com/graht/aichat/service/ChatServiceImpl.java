@@ -3,8 +3,10 @@ package com.graht.aichat.service;
 import com.graht.aichat.ai.client.AIClient;
 import com.graht.aichat.ai.client.AIClientFactory;
 import com.graht.aichat.ai.domain.AIResponse;
+import com.graht.aichat.ai.domain.AIResult;
 import com.graht.aichat.ai.dto.AIRequest;
 import com.graht.aichat.ai.model.ModelType;
+import com.graht.aichat.common.RequestContext;
 import com.graht.aichat.common.ResultCode;
 import com.graht.aichat.dto.ChatRequest;
 import com.graht.aichat.exception.BusinessException;
@@ -31,10 +33,18 @@ public class ChatServiceImpl implements ChatService{
             throw new BusinessException(ResultCode.INVALID_PARAMETER, "Invalid model type");
         }
         AIClient client = clientFactory.getClient(modelType);
-        String string = UUID.randomUUID().toString();
-        return client.chat(AIRequest.builder()
+        AIResult aiResult = client.chat(AIRequest.builder()
                 .prompt(request.getMessage())
-                .requestId(string)
+                .requestId(RequestContext.getRequestId())
+                        .modelType(modelType)
+                        .model(modelType.getModelVersion())
                 .build());
+        return AIResponse.builder()
+                .answer(aiResult.getAnswer())
+                .provider(client.getModelType().getModelName())
+                .model(client.getModelType().getModelName())
+                .modelVersion(client.getModelType().getModelVersion())
+                .status("success")
+                .build();
     }
 }

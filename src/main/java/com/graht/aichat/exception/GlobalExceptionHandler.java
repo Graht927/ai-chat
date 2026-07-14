@@ -1,6 +1,7 @@
 package com.graht.aichat.exception;
 
 import com.graht.aichat.common.AIChatResult;
+import com.graht.aichat.common.AIErrorCode;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -30,5 +31,9 @@ public class GlobalExceptionHandler{
     public AIChatResult<String> handle(MethodArgumentNotValidException e){
         e.printStackTrace();
         return AIChatResult.fail(e.getMessage());
+    }
+    @ExceptionHandler
+    public AIChatResult<String> handle(AIException e){
+        return AIChatResult.fail(e.getErrorCode());
     }
 }
