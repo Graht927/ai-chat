@@ -1,5 +1,7 @@
 package com.graht.aichat.ai.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graht.aichat.ai.credential.CredentialContext;
 import com.graht.aichat.ai.domain.*;
 import com.graht.aichat.ai.dto.AIHttpRequest;
@@ -10,13 +12,14 @@ import com.graht.aichat.ai.http.AIHttpClient;
 import com.graht.aichat.ai.model.ModelType;
 import com.graht.aichat.ai.credential.Credential;
 import com.graht.aichat.ai.credential.CredentialProvider;
-import com.graht.aichat.common.RequestContext;
+import com.graht.aichat.ai.retry.RetryExecutor;
+import com.graht.aichat.common.AIErrorCode;
+import com.graht.aichat.exception.AIException;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
-import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -33,6 +36,8 @@ public class DeepSeekClient implements AIClient{
     public DeepSeekClient(AIHttpClient httpClient) {
         this.httpClient = httpClient;
     }
+    @Resource
+    private RetryExecutor retryExecutor;
 
     @Override
     public AIResult chat(AIRequest request) {
@@ -62,9 +67,14 @@ public class DeepSeekClient implements AIClient{
                         "Content-Type","application/json"
                         ))
                 .build();
-        AIHttpResponse httpResponse = httpClient.execute(httpRequest);
+        AIHttpResponse httpResponse = retryExecutor.execute(credential.getRetryType(),() -> httpClient.execute(httpRequest));
         ObjectMapper objectMapper = new ObjectMapper();
-        DeepSeekResponse deepSeekResponse = objectMapper.readValue(httpResponse.getBody(), DeepSeekResponse.class);
+        DeepSeekResponse deepSeekResponse = null;
+        try {
+        deepSeekResponse = objectMapper.readValue(httpResponse.getBody(), DeepSeekResponse.class);
+        }catch (JsonProcessingException e) {
+            throw new AIException(AIErrorCode.INVALID_RESPONSE);
+        }
         AIResponse aiResponse = AIResponse.builder()
                 .answer(deepSeekResponse.getChoices().get(0).getMessage().getContent())
                 .provider(getModelType().getModelVersion())

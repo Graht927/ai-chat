@@ -1,5 +1,6 @@
 package com.graht.aichat.ai.credential;
 
+import com.graht.aichat.ai.retry.RetryType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,5 +11,7 @@ public class Credential {
     private String apiKey;
 
     private String baseUrl;
+
+    private RetryType retryType;
 
 }

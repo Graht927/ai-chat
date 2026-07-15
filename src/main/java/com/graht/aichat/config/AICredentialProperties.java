@@ -2,6 +2,7 @@ package com.graht.aichat.config;
 
 import com.graht.aichat.ai.credential.Credential;
 import com.graht.aichat.ai.model.ModelType;
+import com.graht.aichat.ai.retry.RetryType;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -20,5 +21,6 @@ public class AICredentialProperties {
     public static class CredentialConfig {
         private String apiKey;
         private String baseUrl;
+        private RetryType retryType;
     }
 }

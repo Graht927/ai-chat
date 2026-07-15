@@ -26,7 +26,10 @@ public enum AIErrorCode {
             5005,
             "Invalid response from AI provider"
     ),
-
+    PROVIDER_UNAVAILABLE(
+            5006,
+            "AI provider service unavailable"
+    ),
     UNKNOWN(
             5999,
             "Unknown AI service error"

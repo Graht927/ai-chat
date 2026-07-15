@@ -12,6 +12,15 @@ ai:
       deepseek:
         api-key: sk-test
         base-url: https://api.deepseek.com/chat/completions
+        retry-type: NO
       openai:
         api-key: sk-test
         base-url: https://api.openai.com
+        retry-type: NO
+  retry:
+    policy: EXPONENTIAL
+    max-attempts: 3
+    fixed-delay: 1000
+    base-delay: 500
+    max-delay: 5000
+    jitter: 100
