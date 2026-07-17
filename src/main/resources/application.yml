@@ -9,17 +9,30 @@ server:
 ai:
   credentials:
     models:
-      deepseek:
+      DEEPSEEK:
         api-key: sk-test
         base-url: https://api.deepseek.com/chat/completions
-        retry-type: NO
-      openai:
+        retry-policy-type: AI_REQUEST
+      OPENAI:
         api-key: sk-test
         base-url: https://api.openai.com
-        retry-type: NO
+        retry-policy-type: AI_REQUEST
   retry:
-    policy: EXPONENTIAL
-    max-attempts: 3
+    config:
+      policies:
+        AI_REQUEST:
+          max-attempts: 3
+          retryable-errors:
+            - TIMEOUT
+            - RATE_LIMIT
+          backoff:
+            type: exponential
+            base-delay: 500
+            max-delay: 5000
+            jitter: 100
+    policy: default
+    backoff: exponential_jitter
+    max-retries: 3
     fixed-delay: 1000
     base-delay: 500
     max-delay: 5000

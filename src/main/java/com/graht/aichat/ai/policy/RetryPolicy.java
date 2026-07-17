@@ -1,16 +1,17 @@
 package com.graht.aichat.ai.policy;
 
-import com.graht.aichat.ai.retry.RetryType;
-import com.graht.aichat.common.AIErrorCode;
-
-import java.util.concurrent.Callable;
+import com.graht.aichat.ai.backoff.BackoffStrategy;
+import com.graht.aichat.ai.retry.RetryConfig;
+import com.graht.aichat.ai.retry.RetryContext;
+import com.graht.aichat.ai.retry.RetryPolicyType;
 
 /**
  * @author GRAHT
  */
 
 public interface RetryPolicy {
-    boolean canRetry(int attempt, Exception e);
-    long nextBackoff(int attempt);
-    RetryType type();
+    boolean canRetry(RetryContext context);
+    RetryPolicyType type();
+    RetryConfig config();
+    BackoffStrategy backoffStrategy();
 }

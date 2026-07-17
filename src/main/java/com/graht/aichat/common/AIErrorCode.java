@@ -33,7 +33,8 @@ public enum AIErrorCode {
     UNKNOWN(
             5999,
             "Unknown AI service error"
-    );
+    ),
+    RETRY_CONFIG_NOT_FOUND(5007, "Retry config not found");
 
 
     private final Integer code;

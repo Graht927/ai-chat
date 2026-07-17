@@ -20,12 +20,12 @@ public class DefaultCredentialProvider implements CredentialProvider{
             case OPENAI -> Credential.builder()
                     .apiKey(config.getModels().get(ModelType.OPENAI.getModelName()).getApiKey())
                     .baseUrl(config.getModels().get(ModelType.OPENAI.getModelName()).getBaseUrl())
-                    .retryType(config.getModels().get(ModelType.OPENAI.getModelName()).getRetryType())
+                    .retryPolicyType(config.getModels().get(ModelType.OPENAI.getModelName()).getRetryPolicyType())
                     .build();
             case DEEPSEEK -> Credential.builder()
                     .apiKey(config.getModels().get(ModelType.DEEPSEEK.getModelName()).getApiKey())
                     .baseUrl(config.getModels().get(ModelType.DEEPSEEK.getModelName()).getBaseUrl())
-                    .retryType(config.getModels().get(ModelType.OPENAI.getModelName()).getRetryType())
+                    .retryPolicyType(config.getModels().get(ModelType.OPENAI.getModelName()).getRetryPolicyType())
                     .build();
                     default -> throw new BusinessException(ResultCode.AI_CLIENT_NOT_FOUND);
         };

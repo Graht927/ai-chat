@@ -1,5 +1,7 @@
 package com.graht.aichat.ai.backoff;
 
+import com.graht.aichat.ai.retry.BackoffType;
+import com.graht.aichat.ai.retry.RetryContext;
 import com.graht.aichat.config.AIRetryProperties;
 import org.springframework.stereotype.Component;
 
@@ -12,15 +14,19 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ExponentialBackoffStrategy implements BackoffStrategy{
     private  final long DEFAULT_DELAY;
     private  final long MAX_DELAY;
-    private final AIRetryProperties properties;
     public ExponentialBackoffStrategy(AIRetryProperties properties) {
-        this.properties = properties;
         DEFAULT_DELAY = properties.getBaseDelay();
         MAX_DELAY = properties.getMaxDelay();
     }
+
     @Override
-    public long nextBackoffMillis(int attempt) {
-            long delay = (long) DEFAULT_DELAY << attempt;
-            return Math.min(delay, MAX_DELAY)+ ThreadLocalRandom.current().nextLong(100);
+    public long nextBackoffMillis(RetryContext context) {
+        long delay = DEFAULT_DELAY * (1L << context.getRetryCount());
+        return Math.min(delay, MAX_DELAY);
+    }
+
+    @Override
+    public BackoffType type() {
+        return BackoffType.EXPONENTIAL;
     }
 }

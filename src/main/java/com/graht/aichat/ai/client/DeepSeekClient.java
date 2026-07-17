@@ -67,7 +67,7 @@ public class DeepSeekClient implements AIClient{
                         "Content-Type","application/json"
                         ))
                 .build();
-        AIHttpResponse httpResponse = retryExecutor.execute(credential.getRetryType(),() -> httpClient.execute(httpRequest));
+        AIHttpResponse httpResponse = retryExecutor.execute(credential.getRetryPolicyType(),() -> httpClient.execute(httpRequest));
         ObjectMapper objectMapper = new ObjectMapper();
         DeepSeekResponse deepSeekResponse = null;
         try {

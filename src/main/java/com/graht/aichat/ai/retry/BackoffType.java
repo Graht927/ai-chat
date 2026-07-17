@@ -4,9 +4,8 @@ package com.graht.aichat.ai.retry;
  * @author GRAHT
  */
 
-
-public enum RetryType {
+public enum BackoffType {
     FIXED,
-    NO,
-    EXPONENTIAL
+    EXPONENTIAL,
+    EXPONENTIAL_JITTER
 }

@@ -1,6 +1,7 @@
 package com.graht.aichat.ai.policy;
 
-import com.graht.aichat.ai.retry.RetryType;
+import com.graht.aichat.ai.retry.RetryConfig;
+import com.graht.aichat.ai.retry.RetryPolicyType;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,7 +14,7 @@ public class RetryPolicyFactory {
     public RetryPolicyFactory(RetryPolicyRegistry retryPolicyRegistry) {
         this.retryPolicyRegistry = retryPolicyRegistry;
     }
-    public RetryPolicy getRetryPolicy(RetryType type) {
+    public RetryPolicy getRetryPolicy(RetryPolicyType type) {
         return retryPolicyRegistry.getPolicy(type);
     }
 }

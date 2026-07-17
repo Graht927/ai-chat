@@ -1,12 +1,12 @@
 package com.graht.aichat.config;
 
-import com.graht.aichat.ai.retry.RetryType;
+import com.graht.aichat.ai.retry.BackoffType;
+import com.graht.aichat.ai.retry.RetryPolicyType;
 import com.graht.aichat.common.AIErrorCode;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -19,12 +19,16 @@ public class AIRetryProperties {
     /**
      * 默认重试策略
      */
-    private RetryType policy = RetryType.FIXED;
+    private RetryPolicyType policy = RetryPolicyType.DEFAULT;
+    /**
+     * 默认重试方法类型
+     */
+    private BackoffType backoff = BackoffType.FIXED;
 
     /**
      * 最大重试次数
      */
-    private int maxAttempts = 3;
+    private int maxRetries = 3;
 
     /**
      * 固定等待(ms)

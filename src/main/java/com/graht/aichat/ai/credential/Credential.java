@@ -1,6 +1,6 @@
 package com.graht.aichat.ai.credential;
 
-import com.graht.aichat.ai.retry.RetryType;
+import com.graht.aichat.ai.retry.RetryPolicyType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,6 +12,6 @@ public class Credential {
 
     private String baseUrl;
 
-    private RetryType retryType;
+    private RetryPolicyType retryPolicyType;
 
 }

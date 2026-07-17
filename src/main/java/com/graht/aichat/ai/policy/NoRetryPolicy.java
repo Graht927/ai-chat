@@ -1,9 +1,10 @@
 package com.graht.aichat.ai.policy;
 
-import com.graht.aichat.ai.retry.RetryType;
+import com.graht.aichat.ai.backoff.BackoffStrategy;
+import com.graht.aichat.ai.retry.RetryConfig;
+import com.graht.aichat.ai.retry.RetryContext;
+import com.graht.aichat.ai.retry.RetryPolicyType;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.Callable;
 
 /**
  * @author GRAHT
@@ -12,18 +13,25 @@ import java.util.concurrent.Callable;
 @Component
 public class NoRetryPolicy implements RetryPolicy {
 
+
     @Override
-    public boolean canRetry(int attempt, Exception e) {
+    public boolean canRetry(RetryContext context) {
         return false;
     }
 
+
     @Override
-    public long nextBackoff(int attempt) {
-        return 0;
+    public RetryPolicyType type() {
+        return RetryPolicyType.NO;
     }
 
     @Override
-    public RetryType type() {
-        return RetryType.NO;
+    public RetryConfig config() {
+        return null;
+    }
+
+    @Override
+    public BackoffStrategy backoffStrategy() {
+        return null;
     }
 }

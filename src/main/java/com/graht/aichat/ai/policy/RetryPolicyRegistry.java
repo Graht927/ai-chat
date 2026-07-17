@@ -1,6 +1,6 @@
 package com.graht.aichat.ai.policy;
 
-import com.graht.aichat.ai.retry.RetryType;
+import com.graht.aichat.ai.retry.RetryPolicyType;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ import java.util.Map;
  */
 @Component
 public class RetryPolicyRegistry implements BeanPostProcessor {
-    private final Map<RetryType, RetryPolicy> retryPolicies = new EnumMap<>(RetryType.class);
+    private final Map<RetryPolicyType, RetryPolicy> retryPolicies = new EnumMap<>(RetryPolicyType.class);
     /*@Resource
     public void setPolicies (List<RetryPolicy> retryPolicies){
         for (RetryPolicy retryPolicy : retryPolicies) {
@@ -32,10 +32,10 @@ public class RetryPolicyRegistry implements BeanPostProcessor {
         }
         return bean;
     }
-    public RetryPolicy getPolicy(RetryType retryType){
-        RetryPolicy retryPolicy = retryPolicies.get(retryType);
+    public RetryPolicy getPolicy(RetryPolicyType retryPolicyType){
+        RetryPolicy retryPolicy = retryPolicies.get(retryPolicyType);
         if (retryPolicy == null) {
-            throw new IllegalArgumentException("No retry policy found for type: " + retryType);
+            throw new IllegalArgumentException("No retry policy found for type: " + retryPolicyType);
         }
         return retryPolicy;
     }
