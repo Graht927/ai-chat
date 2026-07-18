@@ -34,7 +34,12 @@ public enum AIErrorCode {
             5999,
             "Unknown AI service error"
     ),
-    RETRY_CONFIG_NOT_FOUND(5007, "Retry config not found");
+    RETRY_CONFIG_NOT_FOUND(5007, "Retry config not found"),
+    AI_PROVIDER_NOT_FOUND(5008, "AI provider not found" ),
+    AI_MODEL_NOT_FOUND(5009, "AI model not found" ),
+    AI_ENDPOINT_NOT_FOUND(5010, "AI endpoint not found" ),
+    AI_CONVERTER_NOT_FOUND(5011, "AI converter not found" ),
+    AI_BUILDER_NOT_FOUND(5012, "AI builder not found");
 
 
     private final Integer code;

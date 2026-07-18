@@ -7,16 +7,34 @@ server:
   port: 8080
 
 ai:
-  credentials:
-    models:
-      DEEPSEEK:
+  providers:
+      deepseek:
         api-key: sk-test
-        base-url: https://api.deepseek.com/chat/completions
-        retry-policy-type: AI_REQUEST
-      OPENAI:
+        base-url: https://api.deepseek.com
+        default-model: deepseek-chat
+        retry-policy: AI_REQUEST
+        models:
+          deepseek-chat:
+            stream: true
+            max-tokens: 1024
+            reasoners: true
+        endpoints:
+          chat: /chat/completions
+          image: /images/generations
+      openai:
         api-key: sk-test
         base-url: https://api.openai.com
-        retry-policy-type: AI_REQUEST
+        default-model: gpt-3.5-turbo
+        models:
+          - gpt-3.5-turbo
+          - gpt-3.5-turbo-0301
+          - gpt-3.5-turbo-0613
+          - gpt-3.5-turbo-16k
+          - gpt-3.5-turbo-16k-0613
+          - gpt-4
+          - gpt-4-0314
+          - gpt-4-0613
+          - gpt-4-32k
   retry:
     config:
       policies:

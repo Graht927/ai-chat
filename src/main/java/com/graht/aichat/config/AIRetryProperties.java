@@ -1,7 +1,7 @@
 package com.graht.aichat.config;
 
-import com.graht.aichat.ai.retry.BackoffType;
-import com.graht.aichat.ai.retry.RetryPolicyType;
+import com.graht.aichat.infrastructure.retry.BackoffType;
+import com.graht.aichat.infrastructure.retry.RetryPolicyType;
 import com.graht.aichat.common.AIErrorCode;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

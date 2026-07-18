@@ -1,7 +1,7 @@
 package com.graht.aichat.config;
 
-import com.graht.aichat.ai.retry.RetryConfig;
-import com.graht.aichat.ai.retry.RetryPolicyType;
+import com.graht.aichat.infrastructure.retry.RetryConfig;
+import com.graht.aichat.infrastructure.retry.RetryPolicyType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 

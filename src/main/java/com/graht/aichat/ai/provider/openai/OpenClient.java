@@ -1,0 +1,23 @@
+package com.graht.aichat.ai.provider.openai;
+
+import com.graht.aichat.ai.core.client.AIClient;
+import com.graht.aichat.ai.core.domain.AIResult;
+import com.graht.aichat.ai.core.domain.AIRequest;
+import com.graht.aichat.ai.core.model.ModelType;
+import org.springframework.stereotype.Component;
+
+/**
+ * @author GRAHT
+ */
+@Component
+public class OpenClient implements AIClient {
+    @Override
+    public AIResult chat(AIRequest request) {
+        return null;
+    }
+
+    @Override
+    public ModelType getModelType() {
+        return ModelType.OPENAI;
+    }
+}
