@@ -1,5 +1,6 @@
 package com.graht.aichat.ai.provider.deepseek;
 
+import com.graht.aichat.ai.core.model.AIProvider;
 import lombok.Data;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public class DeepSeekResponse {
     private List<Choice> choices;
 
     private Usage usage;
+    private AIProvider provider;
 
 
     @Data

@@ -3,6 +3,7 @@ package com.graht.aichat.ai.provider.qwen;
 import com.graht.aichat.ai.core.client.AIClient;
 import com.graht.aichat.ai.core.domain.AIResult;
 import com.graht.aichat.ai.core.domain.AIRequest;
+import com.graht.aichat.ai.core.model.AIProvider;
 import com.graht.aichat.ai.core.model.ModelType;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +18,9 @@ public class QwenClient implements AIClient {
         return null;
     }
 
+
     @Override
-    public ModelType getModelType() {
-        return ModelType.QWEN;
+    public AIProvider getProvider() {
+        return AIProvider.QWEN;
     }
 }

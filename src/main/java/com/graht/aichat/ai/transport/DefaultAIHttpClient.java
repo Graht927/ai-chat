@@ -1,5 +1,7 @@
 package com.graht.aichat.ai.transport;
 
+import com.graht.aichat.common.AIErrorCode;
+import com.graht.aichat.exception.AIException;
 import com.graht.aichat.infrastructure.aop.AIHttp;
 import com.graht.aichat.ai.transport.AIHttpResponse;
 import com.graht.aichat.ai.codec.request.RequestBuildFactory;
@@ -34,28 +36,21 @@ public class DefaultAIHttpClient implements AIHttpClient{
     @Override
     @AIHttp
     public AIHttpResponse execute(HttpRequest request) {
-        restClient.method(HttpMethod.valueOf(request.method()))
-                .uri(request.uri())
-                .headers(headers->{
-                    HttpHeaders headers1 = request.headers();
-                    for (Map.Entry<String, List<String>> entry : headers1.map().entrySet()) {
-                        headers.add(entry.getKey(), String.valueOf(entry.getValue()));
-                    }
-                })
-                .body(request.bodyPublisher())
-                .exchange((req,res)->{
-                    String body = res.bodyTo(String.class);
-                    Map<String, String> headerMap = new HashMap<>();
-                    res.getHeaders().forEach((name, values) -> {
-                        headerMap.put(name, String.join(",", values));
-                    });
-                    return AIHttpResponse.builder()
+        try {
+            AIHttpResponse<String> exchange = restClient.method(HttpMethod.valueOf(request.method()))
+                    .uri(request.uri())
+                    .headers(headers -> {
+                        request.headers().map().forEach(headers::addAll);
+                    })
+                    .body(request.bodyPublisher())
+                    .exchange((req, res) -> AIHttpResponse.<String>builder()
                             .statusCode(res.getStatusCode().value())
-                            .body(body)
-                            .headers(headerMap)
-                            .build();
-                });
-
-        return  null;
+                            .body(res.bodyTo(String.class))
+                            .headers(res.getHeaders())
+                            .build());
+            return exchange;
+        }catch (Exception e){
+            throw new AIException(AIErrorCode.AI_REQUEST_ERROR,e.getMessage());
+        }
     }
 }

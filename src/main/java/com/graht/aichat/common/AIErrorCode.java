@@ -39,7 +39,10 @@ public enum AIErrorCode {
     AI_MODEL_NOT_FOUND(5009, "AI model not found" ),
     AI_ENDPOINT_NOT_FOUND(5010, "AI endpoint not found" ),
     AI_CONVERTER_NOT_FOUND(5011, "AI converter not found" ),
-    AI_BUILDER_NOT_FOUND(5012, "AI builder not found");
+    AI_BUILDER_NOT_FOUND(5012, "AI builder not found"),
+    AI_INIT_PARSER_ERROR(5013, "AI init parser error" ),
+    AI_PARSER_NOT_FOUND(5014, "AI parser not found" ),
+    AI_REQUEST_ERROR(5015, "AI request error" );
 
 
     private final Integer code;

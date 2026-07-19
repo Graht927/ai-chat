@@ -3,6 +3,7 @@ package com.graht.aichat.ai.transport;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,8 +12,8 @@ import java.util.Map;
 @Data
 @Builder
 public class AIHttpResponse {
-    private Integer statusCode;
-    private Map<String, String> headers;
+    private int statusCode;
+    private Map<String, List<String>> headers;
     private String body;
-    private Long costTime;
+    private Long costTimeMillis;
 }

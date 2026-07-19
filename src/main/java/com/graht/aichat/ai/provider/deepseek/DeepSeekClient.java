@@ -1,9 +1,10 @@
 package com.graht.aichat.ai.provider.deepseek;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.graht.aichat.ai.codec.response.HttpResponseParser;
+import com.graht.aichat.ai.codec.response.HttpResponseParserFactory;
 import com.graht.aichat.ai.core.client.AIClient;
 import com.graht.aichat.ai.core.domain.*;
+import com.graht.aichat.ai.core.model.AIProvider;
 import com.graht.aichat.ai.transport.AIHttpResponse;
 import com.graht.aichat.ai.core.domain.AIRequest;
 import com.graht.aichat.ai.transport.AIHttpClient;
@@ -11,14 +12,13 @@ import com.graht.aichat.ai.codec.request.HttpRequestBuilder;
 import com.graht.aichat.ai.codec.request.RequestBuildContext;
 import com.graht.aichat.ai.codec.request.RequestBuildFactory;
 import com.graht.aichat.ai.codec.request.HttpRequestConverterFactory;
-import com.graht.aichat.ai.core.model.ModelType;
 import com.graht.aichat.ai.provider.ProviderFactory;
+import com.graht.aichat.common.RequestContext;
 import com.graht.aichat.infrastructure.retry.RetryExecutor;
-import com.graht.aichat.common.AIErrorCode;
-import com.graht.aichat.exception.AIException;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import java.net.http.HttpRequest;
 /**
@@ -39,6 +39,8 @@ public class DeepSeekClient implements AIClient {
     private HttpRequestConverterFactory httpRequestConverterFactory;
     @Resource
     private RequestBuildFactory requestBuildFactory;
+    @Resource
+    private HttpResponseParserFactory responseParserFactory;
 
     @Override
     public AIResult chat(AIRequest request) {
@@ -57,33 +59,18 @@ public class DeepSeekClient implements AIClient {
         HttpRequestBuilder<AIRequest> builder = requestBuildFactory.getBuilder(request.getProvider());
         HttpRequest httpRequest = builder.build(context);
         AIHttpResponse httpResponse = retryExecutor.execute(provider.getRetryPolicyType(),() -> httpClient.execute(httpRequest));
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        DeepSeekResponse deepSeekResponse = null;
-        try {
-        deepSeekResponse = objectMapper.readValue(httpResponse.getBody(), DeepSeekResponse.class);
-        }catch (JsonProcessingException e) {
-            throw new AIException(AIErrorCode.INVALID_RESPONSE);
-        }
-        AIResponse aiResponse = AIResponse.builder()
-                .answer(deepSeekResponse.getChoices().get(0).getMessage().getContent())
-                .provider(getModelType().getModelVersion())
-                .model(getModelType().getModelName())
-                .build();
-        TokenUsage usage = TokenUsage.builder()
-                .promptTokens(deepSeekResponse.getUsage().getPrompt_tokens())
-                .completionTokens(deepSeekResponse.getUsage().getCompletion_tokens())
-                .totalTokens(deepSeekResponse.getUsage().getTotal_tokens())
-                .build();
-        log.info(request.getRequestId() + "DeepSeekResponse:" + deepSeekResponse);
+        HttpResponseParser parser = responseParserFactory.getParser(request.getProvider());
+        AIResponse res = parser.parse(httpResponse);
+        log.info("[{}-DeepSeekClient]deepseek response: {}",MDC.get("requestId"), res);
         return AIResult.builder()
-                .answer(aiResponse.getAnswer())
+                .answer(res.getAnswer())
                 .requestId(request.getRequestId())
+                .tokenUsage(res.getTokenUsage())
                 .build();
     }
 
     @Override
-    public ModelType getModelType() {
-        return ModelType.DEEPSEEK;
+    public AIProvider getProvider() {
+        return AIProvider.DEEPSEEK;
     }
 }
