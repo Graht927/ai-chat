@@ -1,8 +1,8 @@
-package com.graht.aichat.ai.codec.request;
+package com.graht.aichat.ai.codec.request.converter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.graht.aichat.ai.codec.request.RequestBuildContext;
+import com.graht.aichat.ai.codec.request.builder.RequestBuildContext;
 import com.graht.aichat.ai.core.model.AIProvider;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,5 @@
-package com.graht.aichat.ai.codec.response;
+package com.graht.aichat.ai.codec.response.parser;
 
-import com.graht.aichat.ai.core.domain.AIResponse;
 import com.graht.aichat.ai.core.model.AIProvider;
 import com.graht.aichat.ai.transport.AIHttpResponse;
 
@@ -10,6 +9,6 @@ import com.graht.aichat.ai.transport.AIHttpResponse;
 
 
 public interface HttpResponseParser<T> {
-    AIResponse parse(AIHttpResponse response);
+    T parse(AIHttpResponse response);
     AIProvider getProvider();
 }

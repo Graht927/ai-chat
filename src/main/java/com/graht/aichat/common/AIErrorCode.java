@@ -42,7 +42,9 @@ public enum AIErrorCode {
     AI_BUILDER_NOT_FOUND(5012, "AI builder not found"),
     AI_INIT_PARSER_ERROR(5013, "AI init parser error" ),
     AI_PARSER_NOT_FOUND(5014, "AI parser not found" ),
-    AI_REQUEST_ERROR(5015, "AI request error" );
+    AI_REQUEST_ERROR(5015, "AI request error" ),
+    RESPONSE_DUPLICATE_CONVERTER(5016, "Response duplicate converter"),
+    AI_RESPONSE_CONVERTER_NOT_FOUND(5017, "AI response converter not found" );
 
 
     private final Integer code;

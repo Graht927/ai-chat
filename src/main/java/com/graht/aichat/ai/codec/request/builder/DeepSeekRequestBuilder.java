@@ -1,7 +1,7 @@
-package com.graht.aichat.ai.codec.request;
+package com.graht.aichat.ai.codec.request.builder;
 
 import com.graht.aichat.ai.core.domain.ProviderConfig;
-import com.graht.aichat.ai.codec.request.DeepSeekRequestConverter;
+import com.graht.aichat.ai.codec.request.converter.DeepSeekRequestConverter;
 import com.graht.aichat.ai.core.model.AIProvider;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;

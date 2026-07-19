@@ -1,19 +1,20 @@
 package com.graht.aichat.ai.provider.deepseek;
 
-import com.graht.aichat.ai.codec.response.HttpResponseParser;
-import com.graht.aichat.ai.codec.response.HttpResponseParserFactory;
+import com.graht.aichat.ai.codec.response.converter.ResponseConverter;
+import com.graht.aichat.ai.codec.response.converter.ResponseConverterFactory;
+import com.graht.aichat.ai.codec.response.parser.HttpResponseParser;
+import com.graht.aichat.ai.codec.response.parser.HttpResponseParserFactory;
 import com.graht.aichat.ai.core.client.AIClient;
 import com.graht.aichat.ai.core.domain.*;
 import com.graht.aichat.ai.core.model.AIProvider;
 import com.graht.aichat.ai.transport.AIHttpResponse;
 import com.graht.aichat.ai.core.domain.AIRequest;
 import com.graht.aichat.ai.transport.AIHttpClient;
-import com.graht.aichat.ai.codec.request.HttpRequestBuilder;
-import com.graht.aichat.ai.codec.request.RequestBuildContext;
-import com.graht.aichat.ai.codec.request.RequestBuildFactory;
-import com.graht.aichat.ai.codec.request.HttpRequestConverterFactory;
+import com.graht.aichat.ai.codec.request.builder.HttpRequestBuilder;
+import com.graht.aichat.ai.codec.request.builder.RequestBuildContext;
+import com.graht.aichat.ai.codec.request.builder.RequestBuildFactory;
+import com.graht.aichat.ai.codec.request.converter.HttpRequestConverterFactory;
 import com.graht.aichat.ai.provider.ProviderFactory;
-import com.graht.aichat.common.RequestContext;
 import com.graht.aichat.infrastructure.retry.RetryExecutor;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
@@ -41,6 +42,8 @@ public class DeepSeekClient implements AIClient {
     private RequestBuildFactory requestBuildFactory;
     @Resource
     private HttpResponseParserFactory responseParserFactory;
+    @Resource
+    private ResponseConverterFactory responseConverterFactory;
 
     @Override
     public AIResult chat(AIRequest request) {
@@ -56,11 +59,18 @@ public class DeepSeekClient implements AIClient {
                 .endpointType(request.getEndpointType())
                 .providerConfig(provider)
                 .build();
+
         HttpRequestBuilder<AIRequest> builder = requestBuildFactory.getBuilder(request.getProvider());
         HttpRequest httpRequest = builder.build(context);
+
         AIHttpResponse httpResponse = retryExecutor.execute(provider.getRetryPolicyType(),() -> httpClient.execute(httpRequest));
-        HttpResponseParser parser = responseParserFactory.getParser(request.getProvider());
-        AIResponse res = parser.parse(httpResponse);
+
+        HttpResponseParser<DeepSeekResponse> parser = responseParserFactory.getParser(request.getProvider());
+        DeepSeekResponse deepSeekResponse = parser.parse(httpResponse);
+
+        ResponseConverter<DeepSeekResponse> converter = responseConverterFactory.getConverter(request.getProvider());
+        AIResponse res = converter.convert(deepSeekResponse);
+
         log.info("[{}-DeepSeekClient]deepseek response: {}",MDC.get("requestId"), res);
         return AIResult.builder()
                 .answer(res.getAnswer())

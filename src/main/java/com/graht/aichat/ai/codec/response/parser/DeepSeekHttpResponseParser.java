@@ -1,4 +1,4 @@
-package com.graht.aichat.ai.codec.response;
+package com.graht.aichat.ai.codec.response.parser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graht.aichat.ai.core.domain.AIResponse;
@@ -19,21 +19,9 @@ public class DeepSeekHttpResponseParser implements HttpResponseParser<DeepSeekRe
     @Resource
     private ObjectMapper objectMapper;
     @Override
-    public AIResponse parse(AIHttpResponse  response) {
+    public DeepSeekResponse parse(AIHttpResponse  response) {
         try {
-            DeepSeekResponse deepSeekResponse = objectMapper.readValue(response.getBody(), DeepSeekResponse.class);
-            TokenUsage usage = TokenUsage.builder()
-                    .promptTokens(deepSeekResponse.getUsage().getPrompt_tokens())
-                    .completionTokens(deepSeekResponse.getUsage().getCompletion_tokens())
-                    .totalTokens(deepSeekResponse.getUsage().getTotal_tokens())
-                    .build();
-            AIResponse aiResponse = AIResponse.builder()
-                    .answer(deepSeekResponse.getChoices().get(0).getMessage().getContent())
-                    .provider(deepSeekResponse.getProvider())
-                    .model(deepSeekResponse.getModel())
-                    .tokenUsage(usage)
-                    .build();
-            return aiResponse;
+            return objectMapper.readValue(response.getBody(), DeepSeekResponse.class);
         } catch (Exception e) {
             throw new AIException(AIErrorCode.INVALID_RESPONSE, e.getMessage());
         }

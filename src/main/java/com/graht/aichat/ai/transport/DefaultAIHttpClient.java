@@ -3,20 +3,15 @@ package com.graht.aichat.ai.transport;
 import com.graht.aichat.common.AIErrorCode;
 import com.graht.aichat.exception.AIException;
 import com.graht.aichat.infrastructure.aop.AIHttp;
-import com.graht.aichat.ai.transport.AIHttpResponse;
-import com.graht.aichat.ai.codec.request.RequestBuildFactory;
-import com.graht.aichat.ai.codec.request.HttpRequestConverter;
+import com.graht.aichat.ai.codec.request.builder.RequestBuildFactory;
+import com.graht.aichat.ai.codec.request.converter.HttpRequestConverter;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author GRAHT
@@ -37,13 +32,13 @@ public class DefaultAIHttpClient implements AIHttpClient{
     @AIHttp
     public AIHttpResponse execute(HttpRequest request) {
         try {
-            AIHttpResponse<String> exchange = restClient.method(HttpMethod.valueOf(request.method()))
+            AIHttpResponse exchange = restClient.method(HttpMethod.valueOf(request.method()))
                     .uri(request.uri())
                     .headers(headers -> {
                         request.headers().map().forEach(headers::addAll);
                     })
                     .body(request.bodyPublisher())
-                    .exchange((req, res) -> AIHttpResponse.<String>builder()
+                    .exchange((req, res) -> AIHttpResponse.builder()
                             .statusCode(res.getStatusCode().value())
                             .body(res.bodyTo(String.class))
                             .headers(res.getHeaders())

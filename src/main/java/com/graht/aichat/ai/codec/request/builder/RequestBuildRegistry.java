@@ -1,4 +1,4 @@
-package com.graht.aichat.ai.codec.request;
+package com.graht.aichat.ai.codec.request.builder;
 
 import com.graht.aichat.ai.core.model.AIProvider;
 import com.graht.aichat.common.AIErrorCode;

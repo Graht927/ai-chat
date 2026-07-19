@@ -1,6 +1,6 @@
-package com.graht.aichat.ai.codec.request;
+package com.graht.aichat.ai.codec.request.converter;
 
-import com.graht.aichat.ai.codec.request.RequestBuildContext;
+import com.graht.aichat.ai.codec.request.builder.RequestBuildContext;
 import com.graht.aichat.ai.core.model.AIProvider;
 
 /**
