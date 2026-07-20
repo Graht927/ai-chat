@@ -1,19 +1,16 @@
 package com.graht.aichat.ai.provider.deepseek;
 
-import com.graht.aichat.ai.codec.response.converter.ResponseConverter;
-import com.graht.aichat.ai.codec.response.converter.ResponseConverterFactory;
-import com.graht.aichat.ai.codec.response.parser.HttpResponseParser;
-import com.graht.aichat.ai.codec.response.parser.HttpResponseParserFactory;
+import com.graht.aichat.ai.codec.request.codec.RequestCodec;
+import com.graht.aichat.ai.codec.request.codec.RequestCodecRegistry;
+import com.graht.aichat.ai.codec.response.codec.ResponseCodec;
+import com.graht.aichat.ai.codec.response.codec.ResponseCodecRegistry;
 import com.graht.aichat.ai.core.client.AIClient;
 import com.graht.aichat.ai.core.domain.*;
 import com.graht.aichat.ai.core.model.AIProvider;
 import com.graht.aichat.ai.transport.AIHttpResponse;
 import com.graht.aichat.ai.core.domain.AIRequest;
 import com.graht.aichat.ai.transport.AIHttpClient;
-import com.graht.aichat.ai.codec.request.builder.HttpRequestBuilder;
 import com.graht.aichat.ai.codec.request.builder.RequestBuildContext;
-import com.graht.aichat.ai.codec.request.builder.RequestBuildFactory;
-import com.graht.aichat.ai.codec.request.converter.HttpRequestConverterFactory;
 import com.graht.aichat.ai.provider.ProviderFactory;
 import com.graht.aichat.infrastructure.retry.RetryExecutor;
 import jakarta.annotation.Resource;
@@ -37,14 +34,9 @@ public class DeepSeekClient implements AIClient {
     @Resource
     private ProviderFactory providerFactory;
     @Resource
-    private HttpRequestConverterFactory httpRequestConverterFactory;
+    private RequestCodecRegistry  requestCodecRegistry;
     @Resource
-    private RequestBuildFactory requestBuildFactory;
-    @Resource
-    private HttpResponseParserFactory responseParserFactory;
-    @Resource
-    private ResponseConverterFactory responseConverterFactory;
-
+    private ResponseCodecRegistry responseCodecRegistry;
     @Override
     public AIResult chat(AIRequest request) {
         //Building request parameters
@@ -59,23 +51,19 @@ public class DeepSeekClient implements AIClient {
                 .endpointType(request.getEndpointType())
                 .providerConfig(provider)
                 .build();
-
-        HttpRequestBuilder<AIRequest> builder = requestBuildFactory.getBuilder(request.getProvider());
-        HttpRequest httpRequest = builder.build(context);
+        RequestCodec codec = requestCodecRegistry.getCodec(request.getProvider());
+        HttpRequest httpRequest = codec.encode(context);
 
         AIHttpResponse httpResponse = retryExecutor.execute(provider.getRetryPolicyType(),() -> httpClient.execute(httpRequest));
 
-        HttpResponseParser<DeepSeekResponse> parser = responseParserFactory.getParser(request.getProvider());
-        DeepSeekResponse deepSeekResponse = parser.parse(httpResponse);
+        ResponseCodec responseCodec = responseCodecRegistry.getResponseCodec(request.getProvider());
+        AIResponse aiResponse = responseCodec.decode(httpResponse);
 
-        ResponseConverter<DeepSeekResponse> converter = responseConverterFactory.getConverter(request.getProvider());
-        AIResponse res = converter.convert(deepSeekResponse);
-
-        log.info("[{}-DeepSeekClient]deepseek response: {}",MDC.get("requestId"), res);
+        log.info("[{}-DeepSeekClient]deepseek response: {}",MDC.get("requestId"), aiResponse);
         return AIResult.builder()
-                .answer(res.getAnswer())
+                .answer(aiResponse.getAnswer())
                 .requestId(request.getRequestId())
-                .tokenUsage(res.getTokenUsage())
+                .tokenUsage(aiResponse.getTokenUsage())
                 .build();
     }
 

@@ -1,7 +1,7 @@
 package com.graht.aichat.ai.codec.response.converter;
 
 import com.graht.aichat.ai.core.domain.AIResponse;
-import com.graht.aichat.ai.core.model.AIProvider;
+import com.graht.aichat.ai.core.model.ProviderCapabilityKey;
 
 /**
  * @author GRAHT
@@ -9,5 +9,8 @@ import com.graht.aichat.ai.core.model.AIProvider;
 
 public interface ResponseConverter<T> {
     AIResponse convert(T response);
-    AIProvider getProvider();
+    ProviderCapabilityKey supportType();
+    Class<T> resType();
+
+
 }

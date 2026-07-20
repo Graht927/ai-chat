@@ -1,0 +1,40 @@
+package com.graht.aichat.ai.codec.response.codec;
+
+import com.graht.aichat.ai.core.model.AIProvider;
+import com.graht.aichat.ai.core.model.ProviderCapabilityKey;
+import com.graht.aichat.common.AIErrorCode;
+import com.graht.aichat.exception.AIException;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.stereotype.Component;
+
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author GRAHT
+ */
+@Component
+public class ResponseCodecRegistry implements BeanPostProcessor {
+    private Map<ProviderCapabilityKey,ResponseCodec> responseCodecMap = new HashMap<>();
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        if(bean instanceof ResponseCodec responseCodec) {
+            ResponseCodec responseCodec1 = responseCodecMap.putIfAbsent(responseCodec.supportType(), responseCodec);
+            if (responseCodec1 != null){
+                throw  new AIException(AIErrorCode.AI_INIT_RESPONSE_CODEC_ERROR);
+            }
+        }
+        return bean;
+    }
+
+    public ResponseCodec getResponseCodec(ProviderCapabilityKey key){
+        ResponseCodec responseCodec = responseCodecMap.get(key);
+        if (responseCodec == null) {
+            throw new AIException(AIErrorCode.AI_INIT_RESPONSE_CODEC_ERROR);
+        }
+        return  responseCodec;
+    }
+}

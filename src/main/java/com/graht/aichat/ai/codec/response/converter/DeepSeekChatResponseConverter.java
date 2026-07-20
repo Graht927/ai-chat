@@ -2,7 +2,9 @@ package com.graht.aichat.ai.codec.response.converter;
 
 import com.graht.aichat.ai.core.domain.AIResponse;
 import com.graht.aichat.ai.core.domain.TokenUsage;
+import com.graht.aichat.ai.core.model.AICapability;
 import com.graht.aichat.ai.core.model.AIProvider;
+import com.graht.aichat.ai.core.model.ProviderCapabilityKey;
 import com.graht.aichat.ai.provider.deepseek.DeepSeekResponse;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +12,7 @@ import org.springframework.stereotype.Component;
  * @author GRAHT
  */
 @Component
-public class DeepSeekResponseConverter implements ResponseConverter<DeepSeekResponse> {
+public class DeepSeekChatResponseConverter implements ResponseConverter<DeepSeekResponse> {
     @Override
     public AIResponse convert(DeepSeekResponse response) {
         return AIResponse.builder()
@@ -26,7 +28,11 @@ public class DeepSeekResponseConverter implements ResponseConverter<DeepSeekResp
     }
 
     @Override
-    public AIProvider getProvider() {
-        return AIProvider.DEEPSEEK;
+    public ProviderCapabilityKey supportType() {
+        return ProviderCapabilityKey.of(AIProvider.DEEPSEEK, AICapability.CHAT);
+    }
+    @Override
+    public Class<DeepSeekResponse> resType() {
+        return DeepSeekResponse.class;
     }
 }

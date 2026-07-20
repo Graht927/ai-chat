@@ -1,9 +1,9 @@
 package com.graht.aichat.ai.codec.request.builder;
 
 import com.graht.aichat.ai.core.domain.ProviderConfig;
-import com.graht.aichat.ai.codec.request.converter.DeepSeekRequestConverter;
+import com.graht.aichat.ai.core.model.AICapability;
 import com.graht.aichat.ai.core.model.AIProvider;
-import jakarta.annotation.Resource;
+import com.graht.aichat.ai.core.model.ProviderCapabilityKey;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
@@ -14,23 +14,24 @@ import java.net.http.HttpRequest;
  */
 @Component
 public class DeepSeekRequestBuilder implements HttpRequestBuilder{
-    @Resource
-    private DeepSeekRequestConverter deepSeekRequestConverter;
+
     @Override
-    public HttpRequest build(RequestBuildContext context) {
+    public HttpRequest build(RequestBuildContext<?> context,String payload) {
         ProviderConfig provider = context.getProviderConfig();
-        String endpoint = provider.getEndpoints().get(context.getEndpointType());
+        AICapability capability = context.getAiCapability();
+        String endpoint = provider.requireEndpoint(capability);
         String apiKey = provider.getApiKey();
         String baseUrl = provider.getBaseUrl();
         return HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + endpoint))
                 .headers("Content-Type", "application/json","Authorization", "Bearer " + apiKey)
-                .POST(HttpRequest.BodyPublishers.ofString(deepSeekRequestConverter.convert(context)))
+                .POST(HttpRequest.BodyPublishers.ofString(payload))
                 .build();
     }
 
+
     @Override
-    public AIProvider provider() {
+    public AIProvider provider(){
         return AIProvider.DEEPSEEK;
     }
 }

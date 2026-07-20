@@ -3,7 +3,9 @@ package com.graht.aichat.ai.codec.response.parser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graht.aichat.ai.core.domain.AIResponse;
 import com.graht.aichat.ai.core.domain.TokenUsage;
+import com.graht.aichat.ai.core.model.AICapability;
 import com.graht.aichat.ai.core.model.AIProvider;
+import com.graht.aichat.ai.core.model.ProviderCapabilityKey;
 import com.graht.aichat.ai.provider.deepseek.DeepSeekResponse;
 import com.graht.aichat.ai.transport.AIHttpResponse;
 import com.graht.aichat.common.AIErrorCode;
@@ -28,7 +30,8 @@ public class DeepSeekHttpResponseParser implements HttpResponseParser<DeepSeekRe
     }
 
     @Override
-    public AIProvider getProvider() {
-        return AIProvider.DEEPSEEK;
+    public ProviderCapabilityKey supportType() {
+        return ProviderCapabilityKey.of(AIProvider.DEEPSEEK, AICapability.CHAT);
     }
+
 }

@@ -3,7 +3,9 @@ package com.graht.aichat.ai.codec.request.converter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.graht.aichat.ai.codec.request.builder.RequestBuildContext;
+import com.graht.aichat.ai.core.model.AICapability;
 import com.graht.aichat.ai.core.model.AIProvider;
+import com.graht.aichat.ai.core.model.ProviderCapabilityKey;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @author GRAHT
  */
 @Component
-public class DeepSeekRequestConverter implements HttpRequestConverter{
+public class DeepSeekChatRequestConverter implements HttpRequestConverter{
     @Resource
     private ObjectMapper objectMapper;
     @Override
@@ -26,7 +28,7 @@ public class DeepSeekRequestConverter implements HttpRequestConverter{
     }
 
     @Override
-    public AIProvider provider() {
-        return AIProvider.DEEPSEEK;
+    public ProviderCapabilityKey supportType() {
+        return ProviderCapabilityKey.of(AIProvider.DEEPSEEK, AICapability.CHAT);
     }
 }
