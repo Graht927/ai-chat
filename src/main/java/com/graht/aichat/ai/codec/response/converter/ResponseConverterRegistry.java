@@ -31,7 +31,7 @@ public class ResponseConverterRegistry implements BeanPostProcessor {
     public ResponseConverter<?> getConverter(ProviderCapabilityKey key){
         ResponseConverter<?> responseConverter = converterMap.get(key);
         if (responseConverter == null) {
-            throw new AIException(AIErrorCode.AI_RESPONSE_CONVERTER_NOT_FOUND, "No response converter found for provider: " + provider);
+            throw new AIException(AIErrorCode.AI_RESPONSE_CONVERTER_NOT_FOUND, "No response converter found for provider: " + key.toString());
         }
         return responseConverter;
     }

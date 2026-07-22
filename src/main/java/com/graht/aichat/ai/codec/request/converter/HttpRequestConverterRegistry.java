@@ -8,13 +8,14 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author GRAHT
  */
 @Component
 public class HttpRequestConverterRegistry implements BeanPostProcessor {
-    private Map<ProviderCapabilityKey, HttpRequestConverter> converters;
+    private Map<ProviderCapabilityKey, HttpRequestConverter> converters = new ConcurrentHashMap<>();
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) {

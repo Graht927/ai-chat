@@ -1,5 +1,6 @@
 package com.graht.aichat.application.controller;
 
+import com.graht.aichat.ai.core.domain.AIChatRequest;
 import com.graht.aichat.ai.core.domain.AIResponse;
 import com.graht.aichat.common.AIChatResult;
 import com.graht.aichat.common.RequestContext;
@@ -22,7 +23,7 @@ public class ChatController {
     private ChatService chatService;
 
     @PostMapping
-    public AIChatResult<AIResponse> chat(@Valid @RequestBody ChatRequest  request){
+    public AIChatResult<AIResponse> chat(@Valid @RequestBody AIChatRequest request){
         log.info(RequestContext.getRequestId() + "Received chat request: {}", request);
         return AIChatResult.ok(chatService.chat(request));
     }

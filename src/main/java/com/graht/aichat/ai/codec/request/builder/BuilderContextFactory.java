@@ -17,6 +17,7 @@ public class BuilderContextFactory {
                 .modelInfo(provider.requireModel(request.getModel()))
                 .requestId(request.getRequestId())
                 .aiCapability(request.getAiCapability())
+                .modelName(request.getModel())
                 .build();
     }
 }

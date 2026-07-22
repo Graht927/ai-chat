@@ -9,7 +9,7 @@ import com.graht.aichat.ai.core.model.ProviderCapabilityKey;
  * @author GRAHT
  */
 
-public interface HttpRequestConverter {
-    String convert(RequestBuildContext context);
+public interface HttpRequestConverter<T> {
+    String convert(RequestBuildContext<?> context);
     ProviderCapabilityKey supportType();
 }

@@ -9,7 +9,7 @@ import com.graht.aichat.ai.transport.AIHttpResponse;
 /**
  * @author GRAHT
  */
-public interface ResponseCodec {
-    AIResponse decode(AIHttpResponse response);
+public interface ResponseCodec<T> {
+    T decode(AIHttpResponse response);
     ProviderCapabilityKey supportType();
 }

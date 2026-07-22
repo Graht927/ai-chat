@@ -46,7 +46,10 @@ public enum AIErrorCode {
     RESPONSE_DUPLICATE_CONVERTER(5016, "Response duplicate converter"),
     AI_RESPONSE_CONVERTER_NOT_FOUND(5017, "AI response converter not found" ),
     AI_INIT_REQUEST_CODEC_ERROR(5018, "AI init request codec error" ),
-    AI_INIT_RESPONSE_CODEC_ERROR(5019, "AI init response codec error" );
+    AI_INIT_RESPONSE_CODEC_ERROR(5019, "AI init response codec error" ),
+    AI_INIT_EXECUTOR_ERROR(5020, "AI init executor error" ),
+    AI_EXECUTOR_NOT_FOUND(5021, "AI executor not found" ),
+    AI_REQUEST_TYPE_ERROR(5022,"AI request type error" );
 
 
     private final Integer code;

@@ -11,29 +11,34 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author GRAHT
  */
 @Component
 public class RequestCodecRegistry implements BeanPostProcessor {
-    private  Map<ProviderCapabilityKey, RequestCodec> requestCodecMap = new HashMap<>();
+    private  Map<ProviderCapabilityKey, RequestCodec<?>> requestCodecMap = new ConcurrentHashMap<>() {
+    };
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) {
-        if (bean instanceof RequestCodec requestCodec){
-            RequestCodec old = requestCodecMap.putIfAbsent(requestCodec.supportType(), requestCodec);
+        if (bean instanceof RequestCodec<?> requestCodec){
+            ProviderCapabilityKey providerCapabilityKey = requestCodec.supportType();
+            RequestCodec<?> old = requestCodecMap.putIfAbsent(providerCapabilityKey, requestCodec);
             if (old != null) {
-                throw new AIException(AIErrorCode.AI_INIT_REQUEST_CODEC_ERROR, "Duplicate RequestCodec for ProviderCapabilityKey:" + requestCodec.supportType().toString());
+                throw new AIException(AIErrorCode.AI_INIT_REQUEST_CODEC_ERROR, "Duplicate RequestCodec for ProviderCapabilityKey:" + providerCapabilityKey.toString());
             }
         }
         return bean;
     }
-    public <T extends AIRequest> RequestCodec  getCodec(ProviderCapabilityKey  key) {
-        RequestCodec codec = requestCodecMap.get(key);
+    @SuppressWarnings("unchecked")
+    public <T extends AIRequest> RequestCodec<T>  getCodec(ProviderCapabilityKey  key) {
+        RequestCodec<?> codec = requestCodecMap.get(key);
         if (codec == null) {
             throw new AIException(AIErrorCode.AI_INIT_REQUEST_CODEC_ERROR, "No RequestCodec found for ProviderCapabilityKey: " + key.toString());
         }
-        return codec;
+        return (RequestCodec<T>) codec;
     }
 
 }

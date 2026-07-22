@@ -13,7 +13,7 @@ import java.util.Map;
  */
 @Data
 @Component
-@ConfigurationProperties(prefix = "ai.providers")
+@ConfigurationProperties(prefix = "ai")
 public class AIProviderProperties {
     private Map<AIProvider, ProviderConfig> providers;
 

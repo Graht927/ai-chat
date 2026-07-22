@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class FixedBackoffStrategy implements BackoffStrategy{
-    private  final long DEFAULT_BACKOFF_MILLIS;
+    private final long DEFAULT_BACKOFF_MILLIS;
     FixedBackoffStrategy(AIRetryProperties retryProperties) {
         DEFAULT_BACKOFF_MILLIS = retryProperties.getFixedDelay();
     }
@@ -22,6 +22,6 @@ public class FixedBackoffStrategy implements BackoffStrategy{
 
     @Override
     public BackoffType type() {
-        return BackoffType.EXPONENTIAL;
+        return BackoffType.FIXED;
     }
 }

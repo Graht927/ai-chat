@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  * @author GRAHT
  */
 @Component
-public class DeepSeekChatResponseCodec implements ResponseCodec{
+public class DeepSeekChatResponseCodec implements ResponseCodec<AIResponse> {
     @Resource
     private DeepSeekHttpResponseParser deepSeekHttpResponseParser;
     @Resource

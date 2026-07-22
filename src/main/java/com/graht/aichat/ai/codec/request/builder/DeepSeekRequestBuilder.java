@@ -1,5 +1,6 @@
 package com.graht.aichat.ai.codec.request.builder;
 
+import com.graht.aichat.ai.core.domain.DeepSeekRequest;
 import com.graht.aichat.ai.core.domain.ProviderConfig;
 import com.graht.aichat.ai.core.model.AICapability;
 import com.graht.aichat.ai.core.model.AIProvider;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.URI;
 import java.net.http.HttpRequest;
+import java.util.List;
 
 /**
  * @author GRAHT

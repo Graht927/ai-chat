@@ -25,7 +25,7 @@ import java.net.http.HttpRequest;
  * @author GRAHT
  */
 @Component
-public abstract class AbstractExecutor<Req extends AIRequest> {
+public abstract class AbstractExecutor<Req extends AIRequest,RES extends AIResponse> {
     private static final Logger log = LoggerFactory.getLogger(AbstractExecutor.class);
     @Resource
     protected RequestCodecRegistry requestCodecRegistry;
@@ -45,7 +45,7 @@ public abstract class AbstractExecutor<Req extends AIRequest> {
     /**
      * 固定执行流程（模板方法）
      */
-    public final AIResponse execute(Req request) {
+    public final RES execute(Req request) {
         log.debug(
                 "[{}] Start Execute {}",
                 request.getRequestId(),
@@ -62,7 +62,7 @@ public abstract class AbstractExecutor<Req extends AIRequest> {
         AIHttpResponse httpResponse =
                 executeHttp(providerConfig, httpRequest);
 
-        AIResponse decode = decode(httpResponse, key);
+        RES decode = decode(httpResponse, key);
         log.debug(
                 "[{}] End Execute {}",
                 request.getRequestId(),
@@ -85,7 +85,7 @@ public abstract class AbstractExecutor<Req extends AIRequest> {
             RequestBuildContext<Req> context,
             ProviderCapabilityKey key) {
 
-        RequestCodec codec =
+        RequestCodec<Req> codec =
                 requestCodecRegistry.getCodec(key);
 
         return codec.encode(context);
@@ -107,13 +107,10 @@ public abstract class AbstractExecutor<Req extends AIRequest> {
     /**
      * Response Decode
      */
-    protected AIResponse decode(
+    protected RES decode(
             AIHttpResponse response,
             ProviderCapabilityKey key) {
-
-        ResponseCodec codec =
-                responseCodecRegistry.getResponseCodec(key);
-
-        return codec.decode(response);
+        ResponseCodec<RES> responseCodec = responseCodecRegistry.getResponseCodec(key);
+        return (RES) responseCodec.decode(response);
     }
 }

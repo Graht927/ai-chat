@@ -16,7 +16,7 @@ public class RetryConfigRegistry {
     public RetryConfigRegistry(RetryConfigProperties policies) {
         this.policies =
                 Map.copyOf(
-                        policies.getTypeRetryConfig()
+                        policies.getPolicies()
                 );
     }
     public RetryConfig getPolicy(RetryPolicyType type) {

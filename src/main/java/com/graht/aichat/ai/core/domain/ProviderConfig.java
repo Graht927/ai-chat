@@ -6,16 +6,18 @@ import com.graht.aichat.common.AIErrorCode;
 import com.graht.aichat.common.EndpointType;
 import com.graht.aichat.exception.AIException;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
 @Data
+@NoArgsConstructor
 public class ProviderConfig {
     private String apiKey;
     private String baseUrl;
     private String defaultModel;
     private Map<String, ModelInfo> models;
-    private Map<AICapability,String> endpoints;
+    private Map<AICapability,String> capabilitys;
     private RetryPolicyType retryPolicyType = RetryPolicyType.AI_REQUEST;
     public ModelInfo requireModel(String modelName){
         ModelInfo modelInfo = models.get(modelName);
@@ -28,7 +30,7 @@ public class ProviderConfig {
         return requireModel(defaultModel);
     }
     public String requireEndpoint(AICapability capability) {
-        String endpoint = endpoints.get(capability);
+        String endpoint = capabilitys.get(capability);
         if (endpoint == null) {
             throw new AIException(AIErrorCode.AI_ENDPOINT_NOT_FOUND);
         }
