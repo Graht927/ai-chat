@@ -17,8 +17,9 @@ public class DeepSeekChatResponseConverter implements ResponseConverter<DeepSeek
     public AIResponse convert(DeepSeekResponse response) {
         return AIResponse.builder()
                 .answer(response.getChoices().get(0).getMessage().getContent())
-                .provider(response.getProvider())
+                .providerCapability(supportType())
                 .model(response.getModel())
+                .status("success")
                 .tokenUsage(TokenUsage.builder()
                         .completionTokens(response.getUsage().getCompletion_tokens())
                         .promptTokens(response.getUsage().getPrompt_tokens())

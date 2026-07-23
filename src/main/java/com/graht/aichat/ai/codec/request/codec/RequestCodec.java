@@ -5,6 +5,7 @@ import com.graht.aichat.ai.core.domain.AIRequest;
 import com.graht.aichat.ai.core.model.AICapability;
 import com.graht.aichat.ai.core.model.AIProvider;
 import com.graht.aichat.ai.core.model.ProviderCapabilityKey;
+import com.graht.aichat.ai.transport.AIHttpRequest;
 
 import java.net.http.HttpRequest;
 
@@ -13,6 +14,6 @@ import java.net.http.HttpRequest;
  */
 
 public interface RequestCodec<T extends AIRequest> {
-    HttpRequest encode(RequestBuildContext<T> context);
+    AIHttpRequest encode(RequestBuildContext<T> context);
     ProviderCapabilityKey supportType();
 }

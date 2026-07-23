@@ -8,5 +8,5 @@ import java.net.http.HttpRequest;
  * @author GRAHT
  */
 public interface AIHttpClient {
-    AIHttpResponse execute(HttpRequest request);
+    AIHttpResponse execute(AIHttpRequest request);
 }

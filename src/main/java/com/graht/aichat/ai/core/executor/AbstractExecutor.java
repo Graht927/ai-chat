@@ -12,6 +12,7 @@ import com.graht.aichat.ai.core.domain.ProviderConfig;
 import com.graht.aichat.ai.core.model.ProviderCapabilityKey;
 import com.graht.aichat.ai.provider.ProviderFactory;
 import com.graht.aichat.ai.transport.AIHttpClient;
+import com.graht.aichat.ai.transport.AIHttpRequest;
 import com.graht.aichat.ai.transport.AIHttpResponse;
 import com.graht.aichat.infrastructure.retry.RetryExecutor;
 import jakarta.annotation.Resource;
@@ -57,7 +58,7 @@ public abstract class AbstractExecutor<Req extends AIRequest,RES extends AIRespo
 
         RequestBuildContext<Req> context = BuilderContextFactory.from(providerConfig, request);
 
-        HttpRequest httpRequest = encode(context, key);
+        AIHttpRequest httpRequest = encode(context, key);
 
         AIHttpResponse httpResponse =
                 executeHttp(providerConfig, httpRequest);
@@ -81,7 +82,7 @@ public abstract class AbstractExecutor<Req extends AIRequest,RES extends AIRespo
     /**
      * Request Encode
      */
-    protected HttpRequest encode(
+    protected AIHttpRequest encode(
             RequestBuildContext<Req> context,
             ProviderCapabilityKey key) {
 
@@ -96,7 +97,7 @@ public abstract class AbstractExecutor<Req extends AIRequest,RES extends AIRespo
      */
     protected AIHttpResponse executeHttp(
             ProviderConfig providerConfig,
-            HttpRequest request) {
+            AIHttpRequest request) {
 
         return retryExecutor.execute(
                 providerConfig.getRetryPolicyType(),

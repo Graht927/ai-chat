@@ -3,6 +3,7 @@ package com.graht.aichat.ai.codec.request.builder;
 import com.graht.aichat.ai.core.model.AICapability;
 import com.graht.aichat.ai.core.model.AIProvider;
 import com.graht.aichat.ai.core.model.ProviderCapabilityKey;
+import com.graht.aichat.ai.transport.AIHttpRequest;
 
 import java.net.http.HttpRequest;
 /**
@@ -11,6 +12,6 @@ import java.net.http.HttpRequest;
 
 
 public interface HttpRequestBuilder {
-    HttpRequest build(RequestBuildContext<?> context,String payload);
+    AIHttpRequest build(RequestBuildContext<?> context, String payload);
     AIProvider provider();
 }

@@ -7,6 +7,7 @@ import com.graht.aichat.ai.core.domain.AIRequest;
 import com.graht.aichat.ai.core.model.AICapability;
 import com.graht.aichat.ai.core.model.AIProvider;
 import com.graht.aichat.ai.core.model.ProviderCapabilityKey;
+import com.graht.aichat.ai.transport.AIHttpRequest;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +24,7 @@ public class DeepSeekChatRequestCodec implements RequestCodec<AIRequest> {
     @Resource
     private DeepSeekRequestBuilder builder;
     @Override
-    public HttpRequest encode(RequestBuildContext<AIRequest> context) {
+    public AIHttpRequest encode(RequestBuildContext<AIRequest> context) {
         String payload = converter.convert(context);
         return builder.build(context,payload);
     }
